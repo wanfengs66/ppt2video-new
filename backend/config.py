@@ -23,18 +23,6 @@ class Settings:
         os.getenv("TASK_DB_PATH", "files/tasks.db"),
     )
 
-    # ── 飞书 OAuth 配置 ──────────────────────────────────
-    FEISHU_APP_ID: str = os.getenv("FEISHU_APP_ID", "")
-    FEISHU_APP_SECRET: str = os.getenv("FEISHU_APP_SECRET", "")
-    FEISHU_REDIRECT_URI: str = os.getenv("FEISHU_REDIRECT_URI", "http://localhost:9000/auth/callback")
-
-    # ── 飞书多维表格（用户统计） ──────────────────────────
-    FEISHU_BITABLE_TOKEN: str = os.getenv("FEISHU_BITABLE_TOKEN", "")
-    FEISHU_TABLE_ID: str = os.getenv("FEISHU_TABLE_ID", "")
-    # 多维表格同步可单独指定应用凭证（为空则复用 FEISHU_APP_ID/SECRET）
-    FEISHU_BITABLE_APP_ID: str = os.getenv("FEISHU_BITABLE_APP_ID", "")
-    FEISHU_BITABLE_APP_SECRET: str = os.getenv("FEISHU_BITABLE_APP_SECRET", "")
-
     # ── JWT 配置 ──────────────────────────────────────────
     JWT_SECRET: str = os.getenv("JWT_SECRET") or os.urandom(24).hex()
     JWT_ALGORITHM: str = "HS256"

@@ -13,7 +13,6 @@ from fastapi import APIRouter, Body, File, HTTPException, Query, Request, Upload
 
 from config import settings
 from utils.audio_generate import calculate_audio_durations, generate_srt_from_audio, synthesize_md_to_speech
-from utils.feishu_sync import sync_user_usage, sync_video_completed
 from utils.image_to_text import parse_image_to_text
 from utils.movie_editor import concatenate_videos, image_to_video, merge_audio_video_subtitle
 from utils.pptx_to_image import pptx_to_images, get_libreoffice_command
@@ -34,12 +33,6 @@ MAX_FILE_SIZE = settings.MAX_FILE_SIZE
 
 os.makedirs(UPLOAD_DIRECTORY, exist_ok=True)
 os.makedirs(VIDEO_OUTPUT_DIR, exist_ok=True)
-
-
-def _get_user_from_request(request: Request):
-    """本地模式：返回默认本地用户"""
-    from auth import LOCAL_USER
-    return {"open_id": LOCAL_USER["open_id"], "name": LOCAL_USER["name"]}
 
 
 def save_to_local(local_file_path: str, output_name: str) -> str:
@@ -322,19 +315,14 @@ async def outline(request: Request, file: UploadFile = File(...)):
     src_path = get_source_pptx_path(unique_upload_directory)
     smartart_slides = detect_smartart_slides(src_path)
 
-    user = _get_user_from_request(request)
-
     try:
         add_video_record(
             job_id=unique_id,
             original_filename=file.filename,
             slide_count=len(image_files),
-            open_id=user["open_id"] if user else "",
         )
     except Exception as e:
         print(f"[History] Failed to add video record: {e}")
-    if user and user["open_id"] != "local-user":
-        await sync_user_usage(open_id=user["open_id"], name=user["name"])
     return {
         "message": "文件已成功处理",
         "file_path": unique_id,
@@ -687,24 +675,15 @@ async def generate_video(request: Request, payload: dict = Body(...)):
     video_filename = f"{file_path}_final_video.mp4"
     video_url = save_to_local(final_video_path, video_filename)
 
-    user = _get_user_from_request(request)
-
     try:
         video_size = os.path.getsize(os.path.join(VIDEO_OUTPUT_DIR, video_filename))
         total_duration = sum(audio_durations)
         update_video_record(
             job_id=file_path, video_url=video_url,
             video_size=video_size, duration=total_duration, status="completed",
-            open_id=user["open_id"] if user else "",
         )
     except Exception as e:
         print(f"Failed to update video record: {e}")
-
-    if user and user["open_id"] != "local-user":
-        await sync_user_usage(open_id=user["open_id"], name=user["name"])
-        # 同步累计视频时长到多维表格
-        total_minutes = total_duration / 60.0
-        await sync_video_completed(open_id=user["open_id"], name=user["name"], duration_minutes=total_minutes)
 
     return {"message": "视频生成成功", "video_url": video_url}
 

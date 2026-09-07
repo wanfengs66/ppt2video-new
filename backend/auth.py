@@ -1,10 +1,10 @@
 """
-本地模式用户模块：无需登录，固定返回本地用户
+本地单用户模式：无需登录，固定返回本地用户
+不依赖任何第三方身份体系，不采集用户标识信息
 """
 from fastapi import Request
 
-# 本地模式：固定返回本地用户，无需登录
-LOCAL_USER = {"open_id": "local-user", "name": "本地用户", "avatar_url": ""}
+LOCAL_USER = {"name": "本地用户"}
 
 
 async def get_current_user(request: Request) -> dict:

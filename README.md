@@ -77,11 +77,12 @@ flowchart TB
     end
 
     BE -->|调用| AI["AI 服务<br/>SiliconFlow<br/>(Qwen / Qwen2-VL / CosyVoice2)"]
-    BE -->|可选| FS["飞书<br/>OAuth / 多维表格统计"]
     BE <--> DB[("SQLite<br/>任务与视频记录")]
 ```
 
 **处理管线说明**：`PPT 上传 → 页面渲染 → 文本提取（三层回退）→ AI 解说词 → TTS 配音 → 字幕 → 视频合成`，全部在服务端完成，前端负责可视化编排和进度展示。
+
+> 🔒 **隐私说明**：本项目为纯本地单用户运行，不依赖任何第三方身份体系，不上传用户标识或使用记录；AI 能力仅在使用时调用 SiliconFlow 云端 API（文本 / 视觉 / TTS）。
 
 ## 🚀 快速开始
 
@@ -188,8 +189,6 @@ docker run -d --name ppt2video -p 9002:9002 \
 | `VLM_CONCURRENCY` | `1` | VLM 并发数 |
 | `FILE_RETENTION_DAYS` | `7` | 任务文件保留天数，过期自动清理（视频文件长期保留） |
 | `JWT_SECRET` | 随机生成 | 生产环境务必设置强随机字符串 |
-| `FEISHU_APP_ID` / `FEISHU_APP_SECRET` | 空 | 飞书 OAuth（可选用飞书登录并统计用量） |
-| `FEISHU_BITABLE_TOKEN` / `FEISHU_TABLE_ID` | 空 | 飞书多维表格，记录用户使用情况（可选） |
 
 ## 🖼️ 界面预览
 
