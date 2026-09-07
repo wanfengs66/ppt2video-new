@@ -1,0 +1,259 @@
+/* PPT2Video 全局样式 — Mostar 电影感奶油风 */
+
+/* Ogg Medium 展示衬线（远程加载，失败回退 Georgia） */
+@font-face {
+  font-family: 'Ogg Medium';
+  src: url('https://dcym8fthxf5uu.cloudfront.net/fonts/247a073c-29f5-4a89-aa3a-741020f346fc/OggText-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Mostar 核心三色 */
+  --ink: #111411;
+  --paper: #fdf1e1;
+  --tint-sky: 74, 181, 224;
+
+  /* 品牌主色 = 奶油纸色 */
+  --primary: #fdf1e1;
+  --primary-ink: #111411;
+  --primary-light: #fdf1e1;
+  --primary-dim: rgba(253, 241, 225, 0.08);
+  --primary-border: rgba(253, 241, 225, 0.32);
+
+  /* 背景层次（变量名保持兼容） */
+  --bg-warm: #0b1110;      /* 页面底色 */
+  --bg-white: #131b18;     /* 面板 */
+  --bg-panel: #131b18;
+  --bg-elevated: #1a241f;  /* 悬浮层 */
+  --bg-glass: rgba(11, 17, 16, 0.72);
+
+  /* 文字（纸色系） */
+  --text-dark: #fdf1e1;
+  --text-gray: rgba(253, 241, 225, 0.62);
+  --text-light: rgba(253, 241, 225, 0.38);
+
+  /* 描边与阴影 */
+  --border: rgba(253, 241, 225, 0.12);
+  --border-strong: rgba(253, 241, 225, 0.26);
+  --shadow: rgba(0, 0, 0, 0.32);
+
+  /* 语义色 */
+  --success: #7ddba0;
+  --info: rgb(74, 181, 224);
+  --purple: #c9b8f5;
+
+  /* 字体 */
+  --font-display: 'Ogg Medium', Georgia, 'Times New Roman', serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Inter, Satoshi, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--text-dark);
+  background: var(--bg-warm);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* ── 通用组件 ── */
+
+/* 玻璃拟态顶栏 */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 40px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* 品牌 Logo 方块：奶油底 + 墨字 */
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--paper);
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+  font-weight: 800;
+  font-size: 16px;
+  font-family: var(--font-display);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+}
+
+/* 奶油胶囊主按钮（沿用 btn-gradient 类名，全局主按钮统一换肤） */
+.btn-gradient {
+  background: var(--paper) !important;
+  border: none !important;
+  color: var(--ink) !important;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.18);
+  transition: transform 0.2s, box-shadow 0.2s !important;
+}
+
+.btn-gradient:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.26);
+  background: #fff8ec !important;
+  color: var(--ink) !important;
+}
+
+.btn-gradient:active {
+  transform: translateY(0);
+}
+
+/* 深背景下 ghost 按钮可见性 */
+.app-header .ant-btn:not(.btn-gradient):not(.ant-btn-primary),
+.btn-ghost-dark {
+  border-color: var(--border-strong) !important;
+  color: var(--text-gray) !important;
+  background: rgba(253, 241, 225, 0.04) !important;
+}
+
+.app-header .ant-btn:not(.btn-gradient):not(.ant-btn-primary):hover,
+.btn-ghost-dark:hover {
+  color: var(--text-dark) !important;
+  border-color: var(--primary-border) !important;
+  background: var(--primary-dim) !important;
+}
+
+/* 深色玻璃卡片 */
+.glass-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary-border);
+  box-shadow: 0 18px 52px rgba(0, 0, 0, 0.32), 0 0 0 1px var(--primary-border);
+}
+
+/* Mostar 奶油卡片（silk-card）：纸底墨字大圆角 */
+.paper-card {
+  background: var(--paper);
+  border: 1px solid rgba(253, 241, 225, 0.42);
+  border-radius: 24px;
+  color: var(--ink);
+  box-shadow: 0 18px 52px rgba(2, 47, 64, 0.12);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.paper-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 26px 64px rgba(2, 47, 64, 0.2);
+}
+
+/* 渐变/衬线展示标题 */
+.text-gradient {
+  font-family: var(--font-display);
+  font-weight: 500;
+  color: var(--paper);
+  text-shadow: 0 16px 38px var(--shadow);
+}
+
+/* 光晕装饰 */
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(253, 241, 225, 0.16);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(253, 241, 225, 0.28);
+}
+
+/* 通用工具类 */
+.text-center {
+  text-align: center;
+}
+
+.text-gray {
+  color: var(--text-gray);
+}
+
+.mt-16 {
+  margin-top: 16px;
+}
+
+.mb-16 {
+  margin-bottom: 16px;
+}
+
+/* SmartArt 幻灯片缩放 */
+.smartart-slide img {
+  transform: scale(0.38);
+  transform-origin: top left;
+}
+
+.smartart-slide {
+  overflow: hidden;
+}
+
+/* 动画 */
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeUp {
+  from { transform: translateY(16px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.fade-up {
+  animation: fadeUp 0.5s ease both;
+}
+
+/* 上传拖拽区深色适配 */
+.ant-upload-wrapper .ant-upload-drag {
+  background: var(--bg-panel) !important;
+  border-color: var(--border-strong) !important;
+}
+
+.ant-upload-wrapper .ant-upload-drag:hover {
+  border-color: var(--primary-border) !important;
+}
+
+/* Steps 深色适配 */
+.ant-steps .ant-steps-item-wait .ant-steps-item-title {
+  color: var(--text-gray) !important;
+}
+
+.ant-steps .ant-steps-item-wait .ant-steps-item-description {
+  color: var(--text-light) !important;
+}
