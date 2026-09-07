@@ -247,7 +247,6 @@ ppt2video-new
 | `GET` | `/api/resources` | 获取页面资源（解说词 / 音频） |
 | `GET` | `/api/voices` | 获取可用音色列表 |
 
-完整交互式文档见部署后访问 `http://localhost:9002/docs`。
 
 ## 🧰 技术栈
 
